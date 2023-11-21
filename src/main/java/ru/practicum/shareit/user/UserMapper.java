@@ -2,6 +2,7 @@ package ru.practicum.shareit.user;
 
 import ru.practicum.shareit.user.dto.UserRequestDto;
 import ru.practicum.shareit.user.dto.UserResponseDto;
+import ru.practicum.shareit.user.model.User;
 
 public class UserMapper {
 

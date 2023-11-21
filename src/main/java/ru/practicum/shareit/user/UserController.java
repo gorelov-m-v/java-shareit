@@ -8,10 +8,9 @@ import ru.practicum.shareit.exception.InvalidArgumentException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserRequestDto;
 import ru.practicum.shareit.user.dto.UserResponseDto;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.validator.UserCreate;
 import ru.practicum.shareit.validator.UserUpdate;
-
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,10 +59,5 @@ public class UserController {
     public void deleteUser(@PathVariable Long userId) {
         log.info("удален пользователь с ID " + userId);
         userService.deleteUser(userId);
-    }
-
-    @PutMapping  //  ("/{userId}")
-    public void put() throws NotFoundException {
-        throw new NotFoundException("такого эндпоинта не существует");
     }
 }

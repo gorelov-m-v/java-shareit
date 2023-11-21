@@ -2,18 +2,16 @@ package ru.practicum.shareit.user;
 
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.ConflictException;
-import ru.practicum.shareit.exception.InvalidArgumentException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserRequestDto;
+import ru.practicum.shareit.user.model.User;
+
 import java.util.*;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
     private final Map<Long, User> users = new HashMap<>();
     protected static Long id = 0L;
-    protected static Long generateId() {
-        return ++ id;
-    }
 
     @Override
     public User creatUser(UserRequestDto userDtoRequest) throws ConflictException {
@@ -65,5 +63,9 @@ public class UserRepositoryImpl implements UserRepository {
                 throw new ConflictException("Пользователь с таким email уже существует");
             }
         }
+    }
+
+    protected static Long generateId() {
+        return ++ id;
     }
 }
