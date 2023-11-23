@@ -9,8 +9,8 @@ import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserRequestDto;
 import ru.practicum.shareit.user.dto.UserResponseDto;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.validator.UserCreate;
-import ru.practicum.shareit.validator.UserUpdate;
+import ru.practicum.shareit.validator.Create;
+import ru.practicum.shareit.validator.Update;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +23,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public UserResponseDto crete(@RequestBody @Validated({UserCreate.class}) UserRequestDto userRequestDto) throws InvalidArgumentException {
+    public UserResponseDto crete(@RequestBody @Validated({Create.class}) UserRequestDto userRequestDto) throws InvalidArgumentException {
         User user = userService.creatUser(userRequestDto);
         log.info("создан пользователь с ID - " + user.getId());
         return UserMapper.userToUserResponseDto(user);
     }
 
     @PatchMapping("/{userId}")
-    public UserResponseDto update(@RequestBody @Validated({UserUpdate.class}) UserRequestDto userRequestDto,
+    public UserResponseDto update(@RequestBody @Validated({Update.class}) UserRequestDto userRequestDto,
                                   @PathVariable Long userId) throws InvalidArgumentException {
         User user = userService.update(userRequestDto, userId);
         log.info("обновлен пользователь с ID - " + user.getId());

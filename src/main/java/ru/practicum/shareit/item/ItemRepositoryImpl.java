@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item;
 
+import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemRequestDto;
 import ru.practicum.shareit.item.model.Item;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Repository
 public class ItemRepositoryImpl implements ItemRepository {
 
     protected static Long id = 0L;

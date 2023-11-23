@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface ItemService {
 
-    ItemResponseDto addItem(User user, ItemRequestDto itemRequestDto);
+    ItemResponseDto addItem(Long userId, ItemRequestDto itemRequestDto);
 
-    ItemResponseDto updateItem(User user, Long itemId, ItemRequestDto itemRequestDto) throws NotFoundException;
+    ItemResponseDto updateItem(Long userId, Long itemId, ItemRequestDto itemRequestDto) throws NotFoundException;
 
     ItemResponseDto getItem(Long itemId);
 
     List<ItemResponseDto> getUserItems(Long userId);
 
-    List<ItemResponseDto> searchItems(String text);
+    List<ItemResponseDto> searchItems(Long userId, String text);
 }
