@@ -3,7 +3,6 @@ package ru.practicum.shareit.user.dto;
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.validator.Create;
 import ru.practicum.shareit.validator.Update;
 
