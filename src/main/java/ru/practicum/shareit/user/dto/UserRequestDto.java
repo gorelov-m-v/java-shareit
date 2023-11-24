@@ -1,7 +1,9 @@
 package ru.practicum.shareit.user.dto;
 
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.validator.Create;
 import ru.practicum.shareit.validator.Update;
 
@@ -20,4 +22,10 @@ public class UserRequestDto {
     @NotNull(groups = Create.class, message = "email - обязательный параметр")
     @Email(groups = {Create.class, Update.class}, message = "email - невалидный")
     String email;
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(new UserRequestDto(name, email));
+    }
 }

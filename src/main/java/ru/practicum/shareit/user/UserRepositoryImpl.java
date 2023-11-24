@@ -5,7 +5,6 @@ import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserRequestDto;
 import ru.practicum.shareit.user.model.User;
-
 import java.util.*;
 
 @Repository
@@ -23,18 +22,19 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User update(UserRequestDto userDtoRequest, Long userId) throws ConflictException {
-        if (!users.get(userId).getEmail().equals(userDtoRequest.getEmail())) {
+        if (!users.get(userId).getEmail().equals(userDtoRequest.getEmail()))
             emailCheck(userDtoRequest);
-        }
+
         User user = users.get(userId);
-        if (Objects.nonNull(userDtoRequest.getName())) {
+
+        if (userDtoRequest.getName() != null)
             user.setName(userDtoRequest.getName());
-        }
-        if (Objects.nonNull(userDtoRequest.getEmail())) {
+
+        if (userDtoRequest.getEmail() != null)
             user.setEmail(userDtoRequest.getEmail());
-        }
 
         users.put(userId, user);
+
         return user;
     }
 
@@ -44,7 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
         if (Objects.nonNull(user)) {
             return user;
         }
-        throw new NotFoundException("Пользователь не найден");
+        throw new NotFoundException("User NotFound");
     }
 
     @Override
@@ -58,11 +58,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private void emailCheck(UserRequestDto userDtoRequest) throws ConflictException {
-        for (User u : users.values()) {
-            if (Objects.equals(userDtoRequest.getEmail(), u.getEmail())) {
-                throw new ConflictException("Пользователь с таким email уже существует");
-            }
-        }
+        users.values().stream()
+                .filter(user -> user.getEmail().equals(userDtoRequest.getEmail()))
+                .findAny()
+                .ifPresent(e -> {
+                    throw new ConflictException("User with this email already exists");
+                });
     }
 
     protected static Long generateId() {

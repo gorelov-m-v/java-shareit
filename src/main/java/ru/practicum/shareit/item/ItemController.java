@@ -1,67 +1,70 @@
 package ru.practicum.shareit.item;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemRequestDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
 import ru.practicum.shareit.validator.Create;
 import ru.practicum.shareit.validator.Update;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
 @RequestMapping("/items")
-@Validated
 @Slf4j
+@RequiredArgsConstructor
 public class ItemController {
 
-    private ItemService itemService;
-
-    @Autowired
-    public ItemController(ItemService itemService) {
-        this.itemService = itemService;
-    }
+    private final ItemService itemService;
 
     @PostMapping
-    public ItemResponseDto addItem(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestBody @Validated({Create.class}) ItemRequestDto itemRequestDto) {
-        log.debug("Добавление вещи {} пользователя с id = {}.", itemRequestDto.getName(), userId);
-        ItemResponseDto savedItem = itemService.addItem(userId, itemRequestDto);
-        log.debug("Вещь добавлена.");
-        return savedItem;
+    public ItemResponseDto addItem(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                   @RequestBody @Validated({Create.class}) ItemRequestDto itemRequestDto,
+                                   HttpServletRequest request, HttpServletResponse response) {
+        log.info("Request - {} {} Body: {}", request.getMethod(), request.getRequestURI(), itemRequestDto);
+        ItemResponseDto itemResponseDto = itemService.addItem(userId, itemRequestDto);
+        log.info("Response - StatusCode: {} Body: {},", response.getStatus(), itemResponseDto);
+        return itemResponseDto;
     }
 
     @PatchMapping("/{itemId}")
-    public ItemResponseDto updateItem(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("itemId") Long itemId,
-                              @RequestBody @Validated({Update.class}) ItemRequestDto item) {
-        log.debug("Обновление вещи id = {} пользователя c id = {}.", itemId, userId);
-        ItemResponseDto updatedItem = itemService.updateItem(userId, itemId, item);
-        log.debug("Данные обновлены.");
-        return updatedItem;
+    public ItemResponseDto updateItem(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                      @PathVariable("itemId") Long itemId,
+                                      @RequestBody @Validated({Update.class}) ItemRequestDto itemRequestDto,
+                                      HttpServletRequest request, HttpServletResponse response) {
+        log.info("Request - {} {} Body: {}", request.getMethod(), request.getRequestURI(), itemRequestDto);
+        ItemResponseDto itemResponseDto = itemService.updateItem(userId, itemId, itemRequestDto);
+        log.info("Response - StatusCode: {} Body: {},", response.getStatus(), itemResponseDto);
+        return itemResponseDto;
     }
 
     @GetMapping("/{itemId}")
-    public ItemResponseDto getItem(@PathVariable("itemId") Long itemId) {
-        log.debug("Поиск вещи id = {}", itemId);
-        ItemResponseDto foundItem = itemService.getItem(itemId);
-        log.debug("Найдена вещь: {}.", foundItem);
-        return foundItem;
+    public ItemResponseDto getItem(@PathVariable("itemId") Long itemId,
+                                   HttpServletRequest request, HttpServletResponse response) {
+        log.info("Request - {} {}", request.getMethod(), request.getRequestURI());
+        ItemResponseDto itemResponseDto = itemService.getItem(itemId);
+        log.info("Response - StatusCode: {} Body: {},", response.getStatus(), itemResponseDto);
+        return itemResponseDto;
     }
 
     @GetMapping
-    public List<ItemResponseDto> getUserItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
-        log.debug("Поиск всех вещей пользователя id = {}.", userId);
+    public List<ItemResponseDto> getUserItems(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                              HttpServletRequest request, HttpServletResponse response) {
+        log.info("Request - {} {}", request.getMethod(), request.getRequestURI());
         List<ItemResponseDto> foundItems = itemService.getUserItems(userId);
-        log.debug("Найдены вещи: {}.", foundItems);
+        log.info("Response - StatusCode: {} Body: {},", response.getStatus(), foundItems);
         return foundItems;
     }
 
     @GetMapping("/search")
-    public List<ItemResponseDto> searchItems(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam String text) {
-        log.debug("Поиск вещей по запросу {}.", text);
+    public List<ItemResponseDto> searchItems(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam String text,
+                                             HttpServletRequest request, HttpServletResponse response) {
+        log.info("Request - {} {}", request.getMethod(), request.getRequestURI());
         List<ItemResponseDto> foundItems = itemService.searchItems(userId, text);
-        log.debug("Найдены вещи: {}.", foundItems);
+        log.info("Response - StatusCode: {} Body: {},", response.getStatus(), foundItems);
         return foundItems;
     }
 }

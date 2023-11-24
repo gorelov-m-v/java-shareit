@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.dto;
 
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,4 +11,10 @@ public class ItemResponseDto {
     String name;
     String description;
     Boolean available;
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(new ItemResponseDto(id, name, description, available));
+    }
 }
