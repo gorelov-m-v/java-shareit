@@ -14,6 +14,6 @@ public class UserResponseDto {
     @Override
     public String toString() {
         Gson gson = new Gson();
-        return gson.toJson(new UserResponseDto(id ,name, email));
+        return gson.toJson(new UserResponseDto(id, name, email));
     }
 }
