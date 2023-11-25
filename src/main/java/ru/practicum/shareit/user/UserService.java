@@ -3,19 +3,19 @@ package ru.practicum.shareit.user;
 import ru.practicum.shareit.exception.InvalidArgumentException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserRequestDto;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.dto.UserResponseDto;
 
 import java.util.List;
 
 public interface  UserService {
 
-    User creatUser(UserRequestDto userDtoRequest) throws InvalidArgumentException;
+    UserResponseDto create(UserRequestDto userDtoRequest) throws InvalidArgumentException;
 
-    User update(UserRequestDto userDtoRequest, Long userId) throws InvalidArgumentException;
+    UserResponseDto update(UserRequestDto userDtoRequest, Long userId) throws InvalidArgumentException;
 
-    User getUser(Long userId) throws NotFoundException;
+    UserResponseDto getUser(Long userId) throws NotFoundException;
 
     void deleteUser(Long userId);
 
-    List<User> getAllUsers();
+    List<UserResponseDto> getAllUsers();
 }

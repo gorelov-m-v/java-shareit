@@ -5,27 +5,33 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.InvalidArgumentException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserRequestDto;
+import ru.practicum.shareit.user.dto.UserResponseDto;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    public User creatUser(UserRequestDto userDtoRequest) throws InvalidArgumentException {
-        return userRepository.creatUser(userDtoRequest);
+    @Override
+    public UserResponseDto create(UserRequestDto userDtoRequest) throws InvalidArgumentException {
+        User user = userRepository.creatUser(userDtoRequest);
+        return UserMapper.userToUserResponseDto(user);
     }
 
     @Override
-    public User update(UserRequestDto userDtoRequest, Long userId) throws InvalidArgumentException {
-        return userRepository.update(userDtoRequest, userId);
+    public UserResponseDto update(UserRequestDto userDtoRequest, Long userId) throws InvalidArgumentException {
+        User user = userRepository.update(userDtoRequest, userId);
+        return UserMapper.userToUserResponseDto(user);
     }
 
     @Override
-    public User getUser(Long userId) throws NotFoundException {
-        return userRepository.getUser(userId);
+    public UserResponseDto getUser(Long userId) throws NotFoundException {
+        User user = userRepository.getUser(userId);
+        return UserMapper.userToUserResponseDto(user);
     }
 
     @Override
@@ -34,7 +40,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+    public List<UserResponseDto> getAllUsers() {
+        return userRepository.getAllUsers().stream()
+                .map(UserMapper::userToUserResponseDto)
+                .collect(Collectors.toList());
     }
 }
