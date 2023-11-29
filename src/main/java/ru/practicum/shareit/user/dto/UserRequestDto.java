@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class UserRequestDto {
 
+    private Long id;
+
     @NotBlank(groups = Create.class, message = "name - не может быть пустым")
     @NotNull(groups = Create.class, message = "name - обязательный")
     String name;
@@ -25,6 +27,6 @@ public class UserRequestDto {
     @Override
     public String toString() {
         Gson gson = new Gson();
-        return gson.toJson(new UserRequestDto(name, email));
+        return gson.toJson(new UserRequestDto(id, name, email));
     }
 }

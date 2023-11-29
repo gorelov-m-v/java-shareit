@@ -46,7 +46,7 @@ public class UserController {
     public UserResponseDto get(@PathVariable Long userId,
                                HttpServletRequest request, HttpServletResponse response) throws NotFoundException {
         log.debug("Request - {} {}", request.getMethod(), request.getRequestURI());
-        UserResponseDto userResponseDto = userService.getUser(userId);
+        UserResponseDto userResponseDto = userService.get(userId);
         log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), userResponseDto);
         return userResponseDto;
     }
@@ -54,7 +54,7 @@ public class UserController {
     @GetMapping
     public List<UserResponseDto> getAll(HttpServletRequest request, HttpServletResponse response) {
         log.debug("Request - {} {}", request.getMethod(), request.getRequestURI());
-        List<UserResponseDto> users = userService.getAllUsers();
+        List<UserResponseDto> users = userService.getAll();
         log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), users);
         return users;
     }
@@ -63,7 +63,7 @@ public class UserController {
     public void delete(@PathVariable Long userId,
                        HttpServletRequest request, HttpServletResponse response) {
         log.debug("Request - {} {}", request.getMethod(), request.getRequestURI());
-        userService.deleteUser(userId);
+        userService.delete(userId);
         log.debug("Response - StatusCode: {}", response.getStatus());
     }
 }

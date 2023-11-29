@@ -17,32 +17,46 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserResponseDto create(UserRequestDto userDtoRequest) throws InvalidArgumentException {
-        User user = userRepository.creatUser(userDtoRequest);
+    public UserResponseDto create(UserRequestDto userRequestDto) throws InvalidArgumentException {
+        User user = userRepository.save(UserMapper.userFromUserRequestDto(userRequestDto));
         return UserMapper.userToUserResponseDto(user);
     }
 
     @Override
     public UserResponseDto update(UserRequestDto userDtoRequest, Long userId) throws InvalidArgumentException {
-        User user = userRepository.update(userDtoRequest, userId);
+        User userToUpdate = findUserIfExists(userId);
+
+        if (userDtoRequest.getName() != null)
+            userToUpdate.setName(userDtoRequest.getName());
+
+        if (userDtoRequest.getEmail() != null)
+            userToUpdate.setEmail(userDtoRequest.getEmail());
+
+        User user = userRepository.save(userToUpdate);
+
         return UserMapper.userToUserResponseDto(user);
     }
 
     @Override
-    public UserResponseDto getUser(Long userId) throws NotFoundException {
-        User user = userRepository.getUser(userId);
+    public UserResponseDto get(Long userId) throws NotFoundException {
+        User user = findUserIfExists(userId);
         return UserMapper.userToUserResponseDto(user);
     }
 
     @Override
-    public void deleteUser(Long userId) {
-        userRepository.deleteUser(userId);
+    public void delete(Long userId) {
+        userRepository.deleteById(userId);
     }
 
     @Override
-    public List<UserResponseDto> getAllUsers() {
-        return userRepository.getAllUsers().stream()
+    public List<UserResponseDto> getAll() {
+        return userRepository.findAll().stream()
                 .map(UserMapper::userToUserResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    private User findUserIfExists(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User with  id = " + id + " not found."));
     }
 }
