@@ -8,7 +8,6 @@ import ru.practicum.shareit.user.model.User;
 public class ItemMapper {
     public static Item itemFromItemRequestDto(ItemRequestDto itemRequestDto, User user) {
         return new Item(
-                ItemRepositoryImpl.generateId(),
                 itemRequestDto.getName(),
                 itemRequestDto.getDescription(),
                 itemRequestDto.getAvailable(),

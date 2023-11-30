@@ -2,6 +2,7 @@ package ru.practicum.shareit.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.exception.InvalidArgumentException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserRequestDto;
@@ -14,12 +15,18 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
 
     @Override
     public UserResponseDto create(UserRequestDto userRequestDto) throws InvalidArgumentException {
-        User user = userRepository.save(UserMapper.userFromUserRequestDto(userRequestDto));
-        return UserMapper.userToUserResponseDto(user);
+        try {
+            User user = userRepository.save(UserMapper.userFromUserRequestDto(userRequestDto));
+
+            return UserMapper.userToUserResponseDto(user);
+        } catch (RuntimeException ex) {
+            throw new ConflictException("User with email " + userRequestDto.getEmail() + " already exists");
+        }
     }
 
     @Override
@@ -32,9 +39,7 @@ public class UserServiceImpl implements UserService {
         if (userDtoRequest.getEmail() != null)
             userToUpdate.setEmail(userDtoRequest.getEmail());
 
-        User user = userRepository.save(userToUpdate);
-
-        return UserMapper.userToUserResponseDto(user);
+        return UserMapper.userToUserResponseDto(userRepository.save(userToUpdate));
     }
 
     @Override
@@ -55,8 +60,8 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    private User findUserIfExists(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User with  id = " + id + " not found."));
+    private User findUserIfExists(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User with  id = " + userId + " not found."));
     }
 }

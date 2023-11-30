@@ -11,6 +11,8 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 public class ItemRequestDto {
+    private Long id;
+
     @NotBlank(groups = Create.class, message = "Имя должно быть заполнено.")
     String name;
     @NotBlank(groups = Create.class, message = "Описание должно быть заполнено.")
@@ -21,6 +23,6 @@ public class ItemRequestDto {
     @Override
     public String toString() {
         Gson gson = new Gson();
-        return gson.toJson(new ItemRequestDto(name, description, available));
+        return gson.toJson(new ItemRequestDto(id, name, description, available));
     }
 }

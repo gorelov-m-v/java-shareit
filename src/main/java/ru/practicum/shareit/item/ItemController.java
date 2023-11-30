@@ -26,7 +26,7 @@ public class ItemController {
                                @RequestBody @Validated({Create.class}) ItemRequestDto itemRequestDto,
                                HttpServletRequest request, HttpServletResponse response) {
         log.debug("Request - {} {} Body: {}", request.getMethod(), request.getRequestURI(), itemRequestDto);
-        ItemResponseDto itemResponseDto = itemService.addItem(userId, itemRequestDto);
+        ItemResponseDto itemResponseDto = itemService.add(userId, itemRequestDto);
         log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), itemResponseDto);
         return itemResponseDto;
     }
@@ -37,7 +37,7 @@ public class ItemController {
                                   @RequestBody @Validated({Update.class}) ItemRequestDto itemRequestDto,
                                   HttpServletRequest request, HttpServletResponse response) {
         log.debug("Request - {} {} Body: {}", request.getMethod(), request.getRequestURI(), itemRequestDto);
-        ItemResponseDto itemResponseDto = itemService.updateItem(userId, itemId, itemRequestDto);
+        ItemResponseDto itemResponseDto = itemService.update(userId, itemId, itemRequestDto);
         log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), itemResponseDto);
         return itemResponseDto;
     }
@@ -46,7 +46,7 @@ public class ItemController {
     public ItemResponseDto get(@PathVariable("itemId") Long itemId,
                                HttpServletRequest request, HttpServletResponse response) {
         log.debug("Request - {} {}", request.getMethod(), request.getRequestURI());
-        ItemResponseDto itemResponseDto = itemService.getItem(itemId);
+        ItemResponseDto itemResponseDto = itemService.get(itemId);
         log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), itemResponseDto);
         return itemResponseDto;
     }

@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface ItemService {
 
-    ItemResponseDto addItem(Long userId, ItemRequestDto itemRequestDto);
+    ItemResponseDto add(Long userId, ItemRequestDto itemRequestDto);
 
-    ItemResponseDto updateItem(Long userId, Long itemId, ItemRequestDto itemRequestDto) throws NotFoundException;
+    ItemResponseDto update(Long userId, Long itemId, ItemRequestDto itemRequestDto) throws NotFoundException;
 
-    ItemResponseDto getItem(Long itemId);
+    ItemResponseDto get(Long itemId);
 
     List<ItemResponseDto> getUserItems(Long userId);
 
