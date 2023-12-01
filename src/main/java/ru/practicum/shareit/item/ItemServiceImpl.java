@@ -3,8 +3,11 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.item.dto.CommentRequestDto;
+import ru.practicum.shareit.item.dto.CommentResponseDto;
 import ru.practicum.shareit.item.dto.ItemRequestDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
+import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.model.User;
@@ -12,7 +15,6 @@ import ru.practicum.shareit.user.model.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static ru.practicum.shareit.item.ItemMapper.itemToItemResponseDto;
 
@@ -22,6 +24,7 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public ItemResponseDto add(Long userId, ItemRequestDto itemRequestDto) {
@@ -57,8 +60,14 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemResponseDto get(Long itemId) {
         Item item = findItemIfExists(itemId);
+        List<Comment> comments = commentRepository.findByItem_Id(itemId);
 
-        return itemToItemResponseDto(item);
+        ItemResponseDto itemResponseDto = ItemMapper.itemToItemResponseDto(item);
+        itemResponseDto.setComments(comments.stream()
+                .map(CommentMapper::commentToCommentResponseDto)
+                .collect(Collectors.toList()));
+
+        return itemResponseDto;
     }
 
     @Override
@@ -68,6 +77,11 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findByOwnerId(userId)
                 .stream()
                 .map(ItemMapper::itemToItemResponseDto)
+                .peek(itemResponseDto -> itemResponseDto.setComments(
+                        commentRepository.findByItem_Id(itemResponseDto.getId())
+                                .stream()
+                                .map(CommentMapper::commentToCommentResponseDto)
+                                .collect(Collectors.toList())))
                 .collect(Collectors.toList());
     }
 
@@ -75,20 +89,23 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemResponseDto> searchItems(Long userId, String text) {
         findUserIfExists(userId);
 
-        List<ItemResponseDto> itemList = new ArrayList<>();
-        if (text.isEmpty()) {
-            return itemList;
-        }
+        if (text.isEmpty())
+            return new ArrayList<>();
 
-        List<Item> findByName = itemRepository.findItemByNameContainsIgnoreCase(text);
-        List<Item> findByDescription = itemRepository.findItemByDescriptionContainsIgnoreCase(text);
-        itemList = Stream.concat(findByDescription.stream(), findByName.stream())
-                .distinct()
-                .filter(Item::getAvailable)
+        return itemRepository.findItemsByText(text).stream()
                 .map(ItemMapper::itemToItemResponseDto)
                 .collect(Collectors.toList());
+    }
 
-        return itemList;
+    @Override
+    public CommentResponseDto addComment(Long userId, Long itemId, CommentRequestDto commentRequestDto) {
+        User user = findUserIfExists(userId);
+        Item item = findItemIfExists(itemId);
+
+        Comment comment = commentRepository.save(CommentMapper.commentRequestDtoToComment(
+                commentRequestDto, user, item));
+
+        return CommentMapper.commentToCommentResponseDto(comment);
     }
 
     private User findUserIfExists(Long userId) {

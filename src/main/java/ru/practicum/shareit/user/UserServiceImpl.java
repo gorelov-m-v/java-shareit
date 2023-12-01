@@ -30,16 +30,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto update(UserRequestDto userDtoRequest, Long userId) throws InvalidArgumentException {
+    public UserResponseDto update(UserRequestDto userRequestDto, Long userId) throws InvalidArgumentException {
         User userToUpdate = findUserIfExists(userId);
 
-        if (userDtoRequest.getName() != null)
-            userToUpdate.setName(userDtoRequest.getName());
+        if (userRequestDto.getName() != null)
+            userToUpdate.setName(userRequestDto.getName());
 
-        if (userDtoRequest.getEmail() != null)
-            userToUpdate.setEmail(userDtoRequest.getEmail());
+        if (userRequestDto.getEmail() != null)
+            userToUpdate.setEmail(userRequestDto.getEmail());
 
-        return UserMapper.userToUserResponseDto(userRepository.save(userToUpdate));
+        try {
+            return UserMapper.userToUserResponseDto(userRepository.save(userToUpdate));
+        } catch (RuntimeException ex) {
+            throw new ConflictException("User with email " + userRequestDto.getEmail() + " already exists");
+        }
     }
 
     @Override
