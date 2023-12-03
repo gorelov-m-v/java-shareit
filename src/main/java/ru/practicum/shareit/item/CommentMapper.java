@@ -7,8 +7,6 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CommentMapper {
     public static Comment commentRequestDtoToComment(CommentRequestDto commentRequestDto, User author, Item item) {
@@ -21,12 +19,5 @@ public class CommentMapper {
                 comment.getText(),
                 comment.getAuthor().getName(),
                 comment.getCreated());
-    }
-
-    public static List<CommentResponseDto> toCommentDtoList(List<Comment> comments) {
-        return comments
-                .stream()
-                .map(CommentMapper::commentToCommentResponseDto)
-                .collect(Collectors.toList());
     }
 }
