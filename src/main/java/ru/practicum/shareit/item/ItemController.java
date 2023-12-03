@@ -45,10 +45,11 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemResponseDto get(@PathVariable("itemId") Long itemId,
+    public ItemResponseDto get(@RequestHeader("X-Sharer-User-Id") Long userId,
+                               @PathVariable("itemId") Long itemId,
                                HttpServletRequest request, HttpServletResponse response) {
         log.debug("Request - {} {}", request.getMethod(), request.getRequestURI());
-        ItemResponseDto itemResponseDto = itemService.get(itemId);
+        ItemResponseDto itemResponseDto = itemService.get(userId, itemId);
         log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), itemResponseDto);
         return itemResponseDto;
     }

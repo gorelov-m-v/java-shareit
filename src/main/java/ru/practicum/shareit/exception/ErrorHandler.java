@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +19,14 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleInvalidArgumentException(final InvalidArgumentException e) {
         log.error("Невалидный параметр: {}", e.getMessage());
-        return new ErrorResponse("Невалидный параметр: " + e.getMessage(), e.getStackTrace().toString());
+        return new ErrorResponse(e.getMessage(), e.getStackTrace().toString());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleConflictException(final ConflictException e) {
         log.error("Невалидный параметр: {}", e.getMessage());
-        return new ErrorResponse("Невалидный параметр: " + e.getMessage(), e.getStackTrace().toString());
+        return new ErrorResponse(e.getMessage(), e.getStackTrace().toString());
     }
 
     @ExceptionHandler

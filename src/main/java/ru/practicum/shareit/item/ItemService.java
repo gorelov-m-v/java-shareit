@@ -14,7 +14,7 @@ public interface ItemService {
 
     ItemResponseDto update(Long userId, Long itemId, ItemRequestDto itemRequestDto) throws NotFoundException;
 
-    ItemResponseDto get(Long itemId);
+    ItemResponseDto get(Long userId, Long itemId);
 
     List<ItemResponseDto> getUserItems(Long userId);
 
