@@ -132,7 +132,7 @@ public class BookingServiceImpl implements BookingService {
                 break;
             case "CURRENT":
                 bookingList.addAll(bookingRepository.findAllByItemOwnerAndStartBeforeAndEndAfter(user,
-                        LocalDateTime.now(), LocalDateTime.now(), sort));
+                        LocalDateTime.now(), LocalDateTime.now()));
                 break;
             case "PAST":
                 bookingList.addAll(bookingRepository.findAllByItemOwnerAndEndBefore(user,

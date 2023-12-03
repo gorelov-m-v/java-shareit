@@ -6,6 +6,7 @@ import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.exception.InvalidArgumentException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.CommentResponseDto;
@@ -18,6 +19,7 @@ import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -112,6 +114,12 @@ public class ItemServiceImpl implements ItemService {
         User user = findUserIfExists(userId);
         Item item = findItemIfExists(itemId);
 
+        List<Booking> bookingList = bookingRepository.findByItem_IdAndBooker_IdAndEndBefore(itemId, userId,
+                LocalDateTime.now());
+
+        if (bookingList.isEmpty())
+            throw new InvalidArgumentException("The booker can make a comment after the end of the rental.");
+
         Comment comment = commentRepository.save(CommentMapper.commentRequestDtoToComment(
                 commentRequestDto, user, item));
 
@@ -124,14 +132,13 @@ public class ItemServiceImpl implements ItemService {
         Booking nextBooking = bookings
                 .stream()
                 .filter(b -> b.getStart().isAfter(LocalDateTime.now()) && !BookingStatus.REJECTED.equals(b.getStatus()))
-                .sorted((b1, b2) -> b1.getStart().compareTo(b2.getStart()))
-                .findFirst()
+                .min(Comparator.comparing(Booking::getStart))
                 .orElse(null);
+
         Booking lastBooking = bookings
                 .stream()
                 .filter(b -> b.getStart().isBefore(LocalDateTime.now()) && !BookingStatus.REJECTED.equals(b.getStatus()))
-                .sorted((b1, b2) -> b2.getStart().compareTo(b1.getStart()))
-                .findFirst()
+                .min((b1, b2) -> b2.getStart().compareTo(b1.getStart()))
                 .orElse(null);
 
         if (lastBooking != null)

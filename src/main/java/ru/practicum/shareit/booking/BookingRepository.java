@@ -12,16 +12,18 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    @Query(value = "select b from Booking as b " +
-            "where b.booker.id =?1 and b.item.id = ?2 and b.status <> ?3 order by b.start desc")
-    List<Booking> findBookingsByBookerAndItemAndStatusNot(Long userId, Long itemId, BookingStatus status);
 
-    @Query(value = "select b from Booking as b where b.item.id = ?1 order by b.start asc")
+    @Query(value = "SELECT b " +
+            "FROM Booking as b " +
+            "WHERE b.item.id = ?1 " +
+            "ORDER BY b.start asc")
     List<Booking> findBookingsByItemAsc(Long itemId);
 
     List<Booking> findAllByBooker(User booker, Sort sort);
 
     List<Booking> findAllByBookerAndStartBeforeAndEndAfter(User booker, LocalDateTime start, LocalDateTime end, Sort sort);
+
+    List<Booking> findByItem_IdAndBooker_IdAndEndBefore(Long userId, Long itemId, LocalDateTime end);
 
     List<Booking> findAllByBookerAndEndBefore(User booker, LocalDateTime end, Sort sort);
 
@@ -31,7 +33,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findAllByItemOwner(User owner, Sort sort);
 
-    List<Booking> findAllByItemOwnerAndStartBeforeAndEndAfter(User owner, LocalDateTime start, LocalDateTime end, Sort sort);
+    List<Booking> findAllByItemOwnerAndStartBeforeAndEndAfter(User owner, LocalDateTime start, LocalDateTime end);
 
     List<Booking> findAllByItemOwnerAndEndBefore(User owner, LocalDateTime end, Sort sort);
 
