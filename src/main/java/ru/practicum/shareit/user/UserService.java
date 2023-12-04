@@ -13,9 +13,9 @@ public interface  UserService {
 
     UserResponseDto update(UserRequestDto userDtoRequest, Long userId) throws InvalidArgumentException;
 
-    UserResponseDto getUser(Long userId) throws NotFoundException;
+    UserResponseDto get(Long userId) throws NotFoundException;
 
-    void deleteUser(Long userId);
+    void delete(Long userId);
 
-    List<UserResponseDto> getAllUsers();
+    List<UserResponseDto> getAll();
 }

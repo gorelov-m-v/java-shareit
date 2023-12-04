@@ -8,7 +8,7 @@ public class UserMapper {
 
     public static User userFromUserRequestDto(UserRequestDto userRequestDto) {
         return new User(
-                UserRepositoryImpl.generateId(),
+                userRequestDto.getId(),
                 userRequestDto.getName(),
                 userRequestDto.getEmail());
     }
