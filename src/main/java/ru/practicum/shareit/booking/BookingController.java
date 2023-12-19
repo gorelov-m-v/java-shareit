@@ -2,6 +2,8 @@ package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
@@ -10,11 +12,13 @@ import ru.practicum.shareit.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/bookings")
 @Slf4j
+@Validated
 @RequiredArgsConstructor
 public class BookingController {
 
@@ -55,9 +59,12 @@ public class BookingController {
     @GetMapping
     public List<BookingResponseDto> getAll(@RequestHeader("X-Sharer-User-Id") Long userId,
                                            @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
+                                           @RequestParam(defaultValue = "0") @Min(0) int from,
+                                           @RequestParam(defaultValue = "10") @Min(1) int size,
                                            HttpServletRequest request, HttpServletResponse response) {
         log.debug("Request - {} {}", request.getMethod(), request.getRequestURI());
-        List<BookingResponseDto> bookingDtoResponse = bookingService.getAll(userId, state);
+        PageRequest page = PageRequest.of(from / size, size).withSort(Sort.Direction.DESC, "start");
+        List<BookingResponseDto> bookingDtoResponse = bookingService.getAll(userId, state, page);
         log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), bookingDtoResponse);
         return bookingDtoResponse;
     }
@@ -65,9 +72,12 @@ public class BookingController {
     @GetMapping("/owner")
     public List<BookingResponseDto> getOwnerItemsAll(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                      @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
+                                                     @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                     @RequestParam(defaultValue = "10") @Min(1) int size,
                                                      HttpServletRequest request, HttpServletResponse response) throws NotFoundException {
         log.debug("Request - {} {}", request.getMethod(), request.getRequestURI());
-        List<BookingResponseDto> bookingDtoResponse = bookingService.getOwnerItemsAll(userId, state);
+        PageRequest page = PageRequest.of(from / size, size).withSort(Sort.Direction.DESC, "start");
+        List<BookingResponseDto> bookingDtoResponse = bookingService.getOwnerItemsAll(userId, state, page);
         log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), bookingDtoResponse);
         return bookingDtoResponse;
     }
