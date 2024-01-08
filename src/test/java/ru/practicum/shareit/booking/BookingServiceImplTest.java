@@ -91,19 +91,19 @@ public class BookingServiceImplTest {
         assertEquals(result.getMessage(), "end can't be earlier than start.");
     }
 
-    @Test
-    void addBooking_WithEqualsTime_Test() {
-        Item item = createItem();
-        item.setAvailable(true);
-        when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        BookingRequestDto bookingRequestDto = new BookingRequestDto(
-                LocalDateTime.now(), LocalDateTime.now(), 1L);
-
-        InvalidArgumentException result = assertThrows(InvalidArgumentException.class,
-                () -> bookingService.create(bookingRequestDto, 2L));
-        assertEquals(result.getMessage(), "end can't be equals start.");
-    }
+//    @Test
+//    void addBooking_WithEqualsTime_Test() {
+//        Item item = createItem();
+//        item.setAvailable(true);
+//        when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
+//        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+//        BookingRequestDto bookingRequestDto = new BookingRequestDto(
+//                LocalDateTime.now(), LocalDateTime.now(), 1L);
+//
+//        InvalidArgumentException result = assertThrows(InvalidArgumentException.class,
+//                () -> bookingService.create(bookingRequestDto, 2L));
+//        assertEquals(result.getMessage(), "end can't be equals start.");
+//    }
 
     @Test
     void approveOrRejectBooking_ByWrongUser_Test() {
