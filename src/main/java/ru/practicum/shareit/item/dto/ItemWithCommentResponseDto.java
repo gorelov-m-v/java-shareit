@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.dto;
 
-import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.practicum.shareit.booking.dto.BookingShortDto;
@@ -25,9 +24,9 @@ public class ItemWithCommentResponseDto {
         this.available = available;
     }
 
-    @Override
-    public String toString() {
-        Gson gson = new Gson();
-        return gson.toJson(new ItemWithCommentResponseDto(id, name, description, available, comments, lastBooking, nextBooking));
-    }
+//    @Override
+//    public String toString() {
+//        Gson gson = new Gson();
+//        return gson.toJson(new ItemWithCommentResponseDto(id, name, description, available, comments, lastBooking, nextBooking));
+//    }
 }

@@ -61,6 +61,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponseDto update(Long bookingId, Long userId, Boolean approved) throws NotFoundException {
         Booking booking = findBookingIfExists(bookingId);
+        findUserIfExists(userId);
 
         if (!booking.getItem().getOwner().getId().equals(userId))
             throw new NotFoundException("This is not your item.");
@@ -151,6 +152,7 @@ public class BookingServiceImpl implements BookingService {
             default:
                 throw new InvalidArgumentException("Unknown state: " + state);
         }
+
         return bookingList.stream().map(BookingMapper::bookingToBookingResponseDto).collect(Collectors.toList());
     }
 
