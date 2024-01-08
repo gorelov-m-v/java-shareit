@@ -46,13 +46,6 @@ public class ItemServiceImplTest {
     private ItemRequestRepository itemRequestRepository;
     private ItemService itemService;
 
-    private static User createUser() {
-        User user = new User();
-        user.setId(1L);
-
-        return user;
-    }
-
     @BeforeEach
     void initItemService() {
         itemService = new ItemServiceImpl(itemRepository, userRepository, commentRepository, bookingRepository,
@@ -262,5 +255,12 @@ public class ItemServiceImplTest {
         item.setOwner(user);
 
         return item;
+    }
+
+    private static User createUser() {
+        User user = new User();
+        user.setId(1L);
+
+        return user;
     }
 }

@@ -92,6 +92,20 @@ public class BookingServiceImplTest {
     }
 
     @Test
+    void addBooking_WithEqualsTime_Test() {
+        Item item = createItem();
+        item.setAvailable(true);
+        when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+        BookingRequestDto bookingRequestDto = new BookingRequestDto(
+                LocalDateTime.now(), LocalDateTime.now(), 1L);
+
+        InvalidArgumentException result = assertThrows(InvalidArgumentException.class,
+                () -> bookingService.create(bookingRequestDto, 2L));
+        assertEquals(result.getMessage(), "end can't be equals start.");
+    }
+
+    @Test
     void approveOrRejectBooking_ByWrongUser_Test() {
         Booking booking = createBooking(BookingStatus.WAITING);
         booking.setItem(createItem());
@@ -357,10 +371,8 @@ public class BookingServiceImplTest {
         User booker = new User();
         booker.setId(2L);
 
-        Booking booking = new Booking();
+        Booking booking = new Booking(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
         booking.setId(1L);
-        booking.setStart(LocalDateTime.now().plusDays(1));
-        booking.setEnd(LocalDateTime.now().plusDays(2));
         booking.setStatus(BookingStatus.APPROVED);
         booking.setItem(createItem());
         booking.setBooker(booker);

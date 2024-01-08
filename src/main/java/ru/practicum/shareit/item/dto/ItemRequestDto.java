@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.dto;
 
-import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.practicum.shareit.validator.Create;
@@ -19,10 +18,4 @@ public class ItemRequestDto {
     String description;
     @NotNull(groups = Create.class)
     Boolean available;
-
-    @Override
-    public String toString() {
-        Gson gson = new Gson();
-        return gson.toJson(new ItemRequestDto(id, name, description, available));
-    }
 }

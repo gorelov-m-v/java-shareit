@@ -36,10 +36,4 @@ public class Item {
     @JoinColumn(name = "request_id")
     private ItemRequest request;
 
-    public Item(String name, String description, Boolean available, User owner) {
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.owner = owner;
-    }
 }
