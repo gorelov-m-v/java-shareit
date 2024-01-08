@@ -31,9 +31,9 @@ public class ItemController {
                                           @RequestBody @Validated({Create.class}) ItemWithRequestResponseDto itemWithRequestResponseDto,
                                           HttpServletRequest request, HttpServletResponse response) {
         log.debug("Request - {} {} Body: {}", request.getMethod(), request.getRequestURI(), itemWithRequestResponseDto);
-        ItemWithRequestResponseDto ItemWithRequestResponseDto = itemService.add(userId, itemWithRequestResponseDto);
-        log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), ItemWithRequestResponseDto);
-        return ItemWithRequestResponseDto;
+        ItemWithRequestResponseDto withRequestResponseDto = itemService.add(userId, itemWithRequestResponseDto);
+        log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), withRequestResponseDto);
+        return withRequestResponseDto;
     }
 
     @PatchMapping("/{itemId}")
@@ -42,9 +42,9 @@ public class ItemController {
                                              @RequestBody @Validated({Update.class}) ItemWithRequestResponseDto itemWithRequestResponseDto,
                                              HttpServletRequest request, HttpServletResponse response) {
         log.debug("Request - {} {} Body: {}", request.getMethod(), request.getRequestURI(), itemWithRequestResponseDto);
-        ItemWithRequestResponseDto ItemWithRequestResponseDto = itemService.update(userId, itemId, itemWithRequestResponseDto);
-        log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), ItemWithRequestResponseDto);
-        return ItemWithRequestResponseDto;
+        ItemWithRequestResponseDto withRequestResponseDto = itemService.update(userId, itemId, itemWithRequestResponseDto);
+        log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), withRequestResponseDto);
+        return withRequestResponseDto;
     }
 
     @GetMapping("/{itemId}")
