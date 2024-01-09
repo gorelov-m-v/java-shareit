@@ -127,6 +127,21 @@ public class BookingControllerTest {
     }
 
     @Test
+    public void getAllWithParameters() throws Exception {
+        when(bookingService.getAll(anyLong(), any(), any()))
+                .thenReturn(List.of(bookingDto));
+
+        mvc.perform(MockMvcRequestBuilders.get("/bookings?state=FUTURE")
+                        .header("X-Sharer-User-Id", bookingDto.getBooker().getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", is(bookingDto.getId()), Long.class))
+                .andExpect(jsonPath("$[0].status", is(BookingStatus.WAITING.name())))
+                .andExpect(jsonPath("$[0].item.id", is(bookingDto.getItem().getId()), Long.class))
+                .andExpect(jsonPath("$[0].item.name", is(bookingDto.getItem().getName())))
+                .andExpect(jsonPath("$[0].booker.id", is(bookingDto.getBooker().getId()), Long.class));
+    }
+
+    @Test
     public void getOwnerItemsAllWithoutParameters() throws Exception {
         when(bookingService.getOwnerItemsAll(anyLong(), any(), any()))
                 .thenReturn(List.of(bookingDto));

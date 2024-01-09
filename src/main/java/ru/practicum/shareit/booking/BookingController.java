@@ -56,6 +56,19 @@ public class BookingController {
         return bookingDtoResponse;
     }
 
+    @GetMapping
+    public List<BookingResponseDto> getAll(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                           @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
+                                           @RequestParam(defaultValue = "0") @Min(0) int from,
+                                           @RequestParam(defaultValue = "10") @Min(1) int size,
+                                           HttpServletRequest request, HttpServletResponse response) {
+        log.debug("Request - {} {}", request.getMethod(), request.getRequestURI());
+        PageRequest page = PageRequest.of(from / size, size).withSort(Sort.Direction.DESC, "start");
+        List<BookingResponseDto> bookingDtoResponse = bookingService.getAll(userId, state, page);
+        log.debug("Response - StatusCode: {} Body: {},", response.getStatus(), bookingDtoResponse);
+        return bookingDtoResponse;
+    }
+
     @GetMapping("/owner")
     public List<BookingResponseDto> getOwnerItemsAll(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                      @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
