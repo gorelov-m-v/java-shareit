@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking;
 
+import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.exception.NotFoundException;
@@ -14,7 +15,7 @@ public interface BookingService {
 
     BookingResponseDto get(Long bookingId, Long userId) throws NotFoundException;
 
-    List<BookingResponseDto> getAll(Long userId, String state);
+    List<BookingResponseDto> getAll(Long userId, String state, PageRequest page);
 
-    List<BookingResponseDto> getOwnerItemsAll(Long userId, String state) throws NotFoundException;
+    List<BookingResponseDto> getOwnerItemsAll(Long userId, String state, PageRequest page) throws NotFoundException;
 }

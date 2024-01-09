@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,13 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleInvalidArgumentException(final InvalidArgumentException e) {
+        log.error("Невалидный параметр: {}", e.getMessage());
+        return new ErrorResponse(e.getMessage(), e.getStackTrace().toString());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleConstraintViolationException(final ConstraintViolationException e) {
         log.error("Невалидный параметр: {}", e.getMessage());
         return new ErrorResponse(e.getMessage(), e.getStackTrace().toString());
     }

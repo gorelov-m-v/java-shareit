@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.dto;
 
-import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.practicum.shareit.booking.dto.BookingShortDto;
@@ -9,7 +8,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class ItemResponseDto {
+public class ItemWithCommentResponseDto {
     Long id;
     String name;
     String description;
@@ -18,16 +17,16 @@ public class ItemResponseDto {
     private BookingShortDto lastBooking;
     private BookingShortDto nextBooking;
 
-    public ItemResponseDto(Long id, String name, String description, Boolean available) {
+    public ItemWithCommentResponseDto(Long id, String name, String description, Boolean available) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.available = available;
     }
 
-    @Override
-    public String toString() {
-        Gson gson = new Gson();
-        return gson.toJson(new ItemResponseDto(id, name, description, available, comments, lastBooking, nextBooking));
-    }
+//    @Override
+//    public String toString() {
+//        Gson gson = new Gson();
+//        return gson.toJson(new ItemWithCommentResponseDto(id, name, description, available, comments, lastBooking, nextBooking));
+//    }
 }
