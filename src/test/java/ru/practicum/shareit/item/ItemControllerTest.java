@@ -8,9 +8,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.practicum.shareit.item.controller.ItemController;
 import ru.practicum.shareit.item.dto.CommentResponseDto;
 import ru.practicum.shareit.item.dto.ItemWithCommentResponseDto;
 import ru.practicum.shareit.item.dto.ItemWithRequestResponseDto;
+import ru.practicum.shareit.item.service.ItemService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;

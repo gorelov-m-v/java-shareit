@@ -9,8 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.practicum.shareit.item.dto.ItemWithRequestResponseDto;
+import ru.practicum.shareit.request.controller.ItemRequestController;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestShortDto;
+import ru.practicum.shareit.request.service.ItemRequestService;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;

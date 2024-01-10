@@ -1,8 +1,8 @@
 package ru.practicum.shareit.utils;
 
 import org.junit.jupiter.api.Test;
-import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
+import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
 
 import java.time.LocalDateTime;

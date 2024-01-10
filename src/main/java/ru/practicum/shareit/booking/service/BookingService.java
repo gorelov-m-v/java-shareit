@@ -1,4 +1,4 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.service;
 
 import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;

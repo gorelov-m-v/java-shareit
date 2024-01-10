@@ -1,4 +1,4 @@
-package ru.practicum.shareit.request;
+package ru.practicum.shareit.request.service;
 
 import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.request.dto.ItemRequestDto;

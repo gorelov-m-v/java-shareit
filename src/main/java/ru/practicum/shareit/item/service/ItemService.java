@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.service;
 
 import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.exception.NotFoundException;
