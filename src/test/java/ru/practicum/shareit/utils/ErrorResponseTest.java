@@ -11,7 +11,7 @@ public class ErrorResponseTest {
 
     @Test
     void errorResponseTest() {
-        assertEquals(errorResponse.getError().toString(), "NotFoundException");
+        assertEquals(errorResponse.getError(), "NotFoundException");
     }
 
 }

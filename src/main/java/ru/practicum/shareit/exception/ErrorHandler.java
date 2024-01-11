@@ -18,7 +18,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleInvalidArgumentException(final InvalidArgumentException e) {
+    public static ErrorResponse handleInvalidArgumentException(final InvalidArgumentException e) {
         log.error("Невалидный параметр: {}", e.getMessage());
         return new ErrorResponse(e.getMessage(), e.getStackTrace().toString());
     }
@@ -32,14 +32,14 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleConflictException(final ConflictException e) {
+    public static ErrorResponse handleConflictException(final ConflictException e) {
         log.error("Невалидный параметр: {}", e.getMessage());
         return new ErrorResponse(e.getMessage(), e.getStackTrace().toString());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleNotFoundException(final NotFoundException e) {
+    public static ErrorResponse handleNotFoundException(final NotFoundException e) {
         log.error(e.getMessage());
         return new ErrorResponse(e.getMessage(), e.getStackTrace().toString());
     }
