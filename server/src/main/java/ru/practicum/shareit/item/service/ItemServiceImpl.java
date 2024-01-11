@@ -101,7 +101,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemWithCommentResponseDto> getUserItems(Long userId, PageRequest page) {
         findUserIfExists(userId);
 
-        return itemRepository.findByOwnerId(userId, page)
+        return itemRepository.findByOwnerIdOrderById(userId, page)
                 .stream()
                 .map(ItemMapper::itemToItemResponseDto)
                 .peek(itemResponseDto -> itemResponseDto.setComments(
@@ -110,7 +110,6 @@ public class ItemServiceImpl implements ItemService {
                                 .map(CommentMapper::commentToCommentResponseDto)
                                 .collect(Collectors.toList())))
                 .peek(this::setBookingToItemResponseDto)
-                .sorted(Comparator.comparing(ItemWithCommentResponseDto::getId))
                 .collect(Collectors.toList());
     }
 
