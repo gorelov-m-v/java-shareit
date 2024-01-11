@@ -3,7 +3,15 @@ package ru.practicum.shareit.item.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.item.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.CommentResponseDto;
 import ru.practicum.shareit.item.dto.ItemWithCommentResponseDto;
@@ -27,8 +35,7 @@ public class ItemController {
     public ItemWithRequestResponseDto add(@RequestHeader("X-Sharer-User-Id") Long userId,
                                           @RequestBody @Validated({Create.class})
                                           ItemWithRequestResponseDto itemWithRequestResponseDto) {
-        ItemWithRequestResponseDto withRequestResponseDto = itemService.add(userId, itemWithRequestResponseDto);
-        return withRequestResponseDto;
+        return itemService.add(userId, itemWithRequestResponseDto);
     }
 
     @PatchMapping("/{itemId}")
@@ -36,16 +43,14 @@ public class ItemController {
                                              @PathVariable("itemId") Long itemId,
                                              @RequestBody @Validated({Update.class})
                                              ItemWithRequestResponseDto itemWithRequestResponseDto) {
-        ItemWithRequestResponseDto withRequestResponseDto = itemService.update(userId, itemId, itemWithRequestResponseDto);
 
-        return withRequestResponseDto;
+        return itemService.update(userId, itemId, itemWithRequestResponseDto);
     }
 
     @GetMapping("/{itemId}")
     public ItemWithCommentResponseDto get(@RequestHeader("X-Sharer-User-Id") Long userId,
                                           @PathVariable("itemId") Long itemId) {
-        ItemWithCommentResponseDto itemWithCommentResponseDto = itemService.get(userId, itemId);
-        return itemWithCommentResponseDto;
+        return itemService.get(userId, itemId);
     }
 
     @GetMapping
@@ -53,20 +58,17 @@ public class ItemController {
                                                          @RequestParam(defaultValue = "0") @Min(0) int from,
                                                          @RequestParam(defaultValue = "10") @Min(1) int size) {
         PageRequest page = PageRequest.of(from / size, size);
-        List<ItemWithCommentResponseDto> foundItems = itemService.getUserItems(userId, page);
-        return foundItems;
+        return itemService.getUserItems(userId, page);
     }
 
     @GetMapping("/search")
     public List<ItemWithCommentResponseDto> searchItems(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam String text) {
-        List<ItemWithCommentResponseDto> foundItems = itemService.searchItems(userId, text);
-        return foundItems;
+        return itemService.searchItems(userId, text);
     }
 
     @PostMapping("/{itemId}/comment")
     public CommentResponseDto addComment(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("itemId") Long itemId,
                                          @RequestBody @Validated CommentRequestDto commentRequestDto) {
-        CommentResponseDto commentResponseDto = itemService.addComment(userId, itemId, commentRequestDto);
-        return commentResponseDto;
+        return itemService.addComment(userId, itemId, commentRequestDto);
     }
 }

@@ -4,7 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.service.BookingService;
@@ -24,24 +32,21 @@ public class BookingController {
     @PostMapping
     public BookingResponseDto create(@RequestHeader("X-Sharer-User-Id") Long userId,
                                      @RequestBody @Validated BookingRequestDto bookingRequestDto) throws NotFoundException {
-        BookingResponseDto bookingDtoResponse = bookingService.create(bookingRequestDto, userId);
-        return bookingDtoResponse;
+        return bookingService.create(bookingRequestDto, userId);
     }
 
     @PatchMapping("/{bookingId}")
     public BookingResponseDto update(@RequestHeader("X-Sharer-User-Id") Long userId,
                                      @PathVariable Long bookingId,
                                      @RequestParam("approved") Boolean approved) throws NotFoundException {
-        BookingResponseDto bookingDtoResponse = bookingService.update(bookingId, userId, approved);
-        return bookingDtoResponse;
+        return bookingService.update(bookingId, userId, approved);
     }
 
 
     @GetMapping("/{bookingId}")
     public BookingResponseDto get(@RequestHeader("X-Sharer-User-Id") Long userId,
                                   @PathVariable Long bookingId) throws NotFoundException {
-        BookingResponseDto bookingDtoResponse = bookingService.get(bookingId, userId);
-        return bookingDtoResponse;
+        return bookingService.get(bookingId, userId);
     }
 
     @GetMapping
@@ -50,8 +55,7 @@ public class BookingController {
                                            @RequestParam(defaultValue = "0") @Min(0) int from,
                                            @RequestParam(defaultValue = "10") @Min(1) int size) {
         PageRequest page = PageRequest.of(from / size, size).withSort(Sort.Direction.DESC, "start");
-        List<BookingResponseDto> bookingDtoResponse = bookingService.getAll(userId, state, page);
-        return bookingDtoResponse;
+        return bookingService.getAll(userId, state, page);
     }
 
     @GetMapping("/owner")
@@ -60,7 +64,6 @@ public class BookingController {
                                                      @RequestParam(defaultValue = "0") @Min(0) int from,
                                                      @RequestParam(defaultValue = "10") @Min(1) int size) throws NotFoundException {
         PageRequest page = PageRequest.of(from / size, size).withSort(Sort.Direction.DESC, "start");
-        List<BookingResponseDto> bookingDtoResponse = bookingService.getOwnerItemsAll(userId, state, page);
-        return bookingDtoResponse;
+        return bookingService.getOwnerItemsAll(userId, state, page);
     }
 }

@@ -23,10 +23,4 @@ public class ItemWithCommentResponseDto {
         this.description = description;
         this.available = available;
     }
-
-//    @Override
-//    public String toString() {
-//        Gson gson = new Gson();
-//        return gson.toJson(new ItemWithCommentResponseDto(id, name, description, available, comments, lastBooking, nextBooking));
-//    }
 }

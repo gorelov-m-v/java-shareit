@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.practicum.shareit.item.mapper.ItemMapper.toItemShortDto;
@@ -141,28 +142,27 @@ public class ItemServiceImpl implements ItemService {
         return CommentMapper.commentToCommentResponseDto(comment);
     }
 
-    private ItemWithCommentResponseDto setBookingToItemResponseDto(ItemWithCommentResponseDto itemWithCommentResponseDto) {
+    private void setBookingToItemResponseDto(ItemWithCommentResponseDto itemWithCommentResponseDto) {
+        Booking nextBooking;
+        Booking lastBooking;
         List<Booking> bookings = bookingRepository.findBookingsByItemAsc(itemWithCommentResponseDto.getId());
 
-        Booking nextBooking = bookings
-                .stream()
+        Optional<Booking> optionalNextBooking = bookings.stream()
                 .filter(b -> b.getStart().isAfter(LocalDateTime.now()) && !BookingStatus.REJECTED.equals(b.getStatus()))
-                .min(Comparator.comparing(Booking::getStart))
-                .orElse(null);
+                .min(Comparator.comparing(Booking::getStart));
+        if (optionalNextBooking.isPresent()) {
+            nextBooking = optionalNextBooking.get();
+            itemWithCommentResponseDto.setNextBooking(BookingMapper.bookingToBookingShortDto(nextBooking));
+        }
 
-        Booking lastBooking = bookings
+        Optional<Booking> optionalLastBooking = bookings
                 .stream()
                 .filter(b -> b.getStart().isBefore(LocalDateTime.now()) && !BookingStatus.REJECTED.equals(b.getStatus()))
-                .min((b1, b2) -> b2.getStart().compareTo(b1.getStart()))
-                .orElse(null);
-
-        if (lastBooking != null)
+                .min((b1, b2) -> b2.getStart().compareTo(b1.getStart()));
+        if (optionalLastBooking.isPresent()) {
+            lastBooking = optionalLastBooking.get();
             itemWithCommentResponseDto.setLastBooking(BookingMapper.bookingToBookingShortDto(lastBooking));
-
-        if (nextBooking != null)
-            itemWithCommentResponseDto.setNextBooking(BookingMapper.bookingToBookingShortDto(nextBooking));
-
-        return itemWithCommentResponseDto;
+        }
     }
 
     private User findUserIfExists(Long userId) {
