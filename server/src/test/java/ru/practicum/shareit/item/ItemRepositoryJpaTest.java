@@ -87,7 +87,7 @@ public class ItemRepositoryJpaTest {
 
     @Test
     void findByOwnerId_PositiveTest() {
-        List<Item> resultItems = itemRepository.findByOwnerId(owner.getId(), page);
+        List<Item> resultItems = itemRepository.findByOwnerIdOrderById(owner.getId(), page);
 
         assertEquals(1, resultItems.size());
     }
