@@ -110,6 +110,7 @@ public class ItemServiceImpl implements ItemService {
                                 .map(CommentMapper::commentToCommentResponseDto)
                                 .collect(Collectors.toList())))
                 .peek(this::setBookingToItemResponseDto)
+                .sorted(Comparator.comparing(ItemWithCommentResponseDto::getId))
                 .collect(Collectors.toList());
     }
 
