@@ -21,4 +21,10 @@ public class BookingRequestDto {
     private LocalDateTime end;
 
     private Long itemId;
+
+    public BookingRequestDto(LocalDateTime start, LocalDateTime end, Long itemId) {
+        this.start = start;
+        this.end = end;
+        this.itemId = itemId;
+    }
 }
