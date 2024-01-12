@@ -23,19 +23,19 @@ public class ItemClient extends BaseClient {
                 .build());
     }
 
-    public ResponseEntity add(Long userId, ItemWithRequestResponseDto itemDto) {
+    public ResponseEntity<Object> add(Long userId, ItemWithRequestResponseDto itemDto) {
         return post("", userId, itemDto);
     }
 
-    public ResponseEntity update(long userId, long itemId, ItemWithRequestResponseDto itemDto) {
+    public ResponseEntity<Object> update(long userId, long itemId, ItemWithRequestResponseDto itemDto) {
         return patch("/" + itemId, userId, itemDto);
     }
 
-    public ResponseEntity get(long userId, long itemId) {
+    public ResponseEntity<Object> get(long userId, long itemId) {
         return get("/" + itemId, userId);
     }
 
-    public ResponseEntity getUserItems(long userId, Integer from, Integer size) {
+    public ResponseEntity<Object> getUserItems(long userId, Integer from, Integer size) {
         Map<String, Object> parameters = Map.of(
                 "from", from,
                 "size", size
@@ -43,11 +43,11 @@ public class ItemClient extends BaseClient {
         return get("?from={from}&size={size}", userId, parameters);
     }
 
-    public ResponseEntity searchItems(long userId, String text) {
+    public ResponseEntity<Object> searchItems(long userId, String text) {
         return get("/search?text=" + text, userId);
     }
 
-    public ResponseEntity addComment(long userId, long itemId, CommentRequestDto commentDto) {
+    public ResponseEntity<Object> addComment(long userId, long itemId, CommentRequestDto commentDto) {
         return post("/" + itemId + "/comment", userId, commentDto);
     }
 }

@@ -25,13 +25,13 @@ public class BookingController {
 	private final BookingClient bookingClient;
 
 	@PostMapping
-	public ResponseEntity create(@RequestHeader("X-Sharer-User-Id") Long userId,
+	public ResponseEntity<Object> create(@RequestHeader("X-Sharer-User-Id") Long userId,
 								 @RequestBody @Validated BookingRequestDto bookingRequestDto) {
 		return bookingClient.create(userId, bookingRequestDto);
 	}
 
 	@PatchMapping("/{bookingId}")
-	public ResponseEntity update(@RequestHeader("X-Sharer-User-Id") Long userId,
+	public ResponseEntity<Object> update(@RequestHeader("X-Sharer-User-Id") Long userId,
 								 @PathVariable Long bookingId,
 								 @RequestParam("approved") Boolean approved) {
 		return bookingClient.update(userId, bookingId, approved);
@@ -39,13 +39,13 @@ public class BookingController {
 
 
 	@GetMapping("/{bookingId}")
-	public ResponseEntity get(@RequestHeader("X-Sharer-User-Id") Long userId,
+	public ResponseEntity<Object> get(@RequestHeader("X-Sharer-User-Id") Long userId,
 							  @PathVariable Long bookingId) {
 		return bookingClient.get(userId, bookingId);
 	}
 
 	@GetMapping
-	public ResponseEntity getAll(@RequestHeader("X-Sharer-User-Id") Long userId,
+	public ResponseEntity<Object> getAll(@RequestHeader("X-Sharer-User-Id") Long userId,
 								 @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
 								 @RequestParam(defaultValue = "0") @Min(0) int from,
 								 @RequestParam(defaultValue = "10") @Min(1) int size) {
@@ -53,7 +53,7 @@ public class BookingController {
 	}
 
 	@GetMapping("/owner")
-	public ResponseEntity getOwnerItemsAll(@RequestHeader("X-Sharer-User-Id") Long userId,
+	public ResponseEntity<Object> getOwnerItemsAll(@RequestHeader("X-Sharer-User-Id") Long userId,
 										   @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
 										   @RequestParam(defaultValue = "0") @Min(0) int from,
 										   @RequestParam(defaultValue = "10") @Min(1) int size) {

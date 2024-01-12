@@ -28,14 +28,14 @@ public class ItemController {
     private final ItemClient itemClient;
 
     @PostMapping
-    public ResponseEntity add(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<Object> add(@RequestHeader("X-Sharer-User-Id") Long userId,
                               @RequestBody @Validated({Create.class})
                               ItemWithRequestResponseDto itemWithRequestResponseDto) {
         return itemClient.add(userId, itemWithRequestResponseDto);
     }
 
     @PatchMapping("/{itemId}")
-    public ResponseEntity update(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<Object> update(@RequestHeader("X-Sharer-User-Id") Long userId,
                                  @PathVariable("itemId") Long itemId,
                                  @RequestBody @Validated({Update.class})
                                  ItemWithRequestResponseDto itemWithRequestResponseDto) {
@@ -44,26 +44,26 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ResponseEntity get(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<Object> get(@RequestHeader("X-Sharer-User-Id") Long userId,
                               @PathVariable("itemId") Long itemId) {
         return itemClient.get(userId, itemId);
     }
 
     @GetMapping
-    public ResponseEntity getUserItems(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<Object> getUserItems(@RequestHeader("X-Sharer-User-Id") Long userId,
                                        @RequestParam(defaultValue = "0") @Min(0) int from,
                                        @RequestParam(defaultValue = "10") @Min(1) int size) {
         return itemClient.getUserItems(userId, from, size);
     }
 
     @GetMapping("/search")
-    public ResponseEntity searchItems(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<Object> searchItems(@RequestHeader("X-Sharer-User-Id") Long userId,
                                       @RequestParam String text) {
         return itemClient.searchItems(userId, text);
     }
 
     @PostMapping("/{itemId}/comment")
-    public ResponseEntity addComment(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<Object> addComment(@RequestHeader("X-Sharer-User-Id") Long userId,
                                      @PathVariable("itemId") Long itemId,
                                      @RequestBody @Validated CommentRequestDto commentRequestDto) {
         return itemClient.addComment(userId, itemId, commentRequestDto);
