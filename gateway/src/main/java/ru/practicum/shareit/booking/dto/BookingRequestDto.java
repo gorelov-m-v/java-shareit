@@ -19,6 +19,7 @@ public class BookingRequestDto {
     @NotNull
     private LocalDateTime end;
 
+    @NotNull
     private Long itemId;
 
     public BookingRequestDto(LocalDateTime start, LocalDateTime end, Long itemId) {

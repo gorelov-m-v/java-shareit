@@ -17,9 +17,6 @@ import ru.practicum.shareit.user.dto.UserRequestDto;
 import ru.practicum.shareit.validator.Create;
 import ru.practicum.shareit.validator.Update;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
@@ -28,24 +25,24 @@ public class UserController {
     private final UserClient userClient;
 
     @PostMapping
-    public ResponseEntity create(@RequestBody @Validated({Create.class})
+    public ResponseEntity<Object> create(@RequestBody @Validated({Create.class})
                                  UserRequestDto userRequestDto) throws InvalidArgumentException {
         return userClient.create(userRequestDto);
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity update(@RequestBody @Validated({Update.class}) UserRequestDto userRequestDto,
+    public ResponseEntity<Object> update(@RequestBody @Validated({Update.class}) UserRequestDto userRequestDto,
                                  @PathVariable Long userId) throws InvalidArgumentException {
         return userClient.update(userId, userRequestDto);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity get(@PathVariable Long userId) throws NotFoundException {
+    public ResponseEntity<Object> get(@PathVariable Long userId) throws NotFoundException {
         return userClient.get(userId);
     }
 
     @GetMapping
-    public ResponseEntity getAll(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<Object> getAll() {
         return userClient.getAll();
     }
 
